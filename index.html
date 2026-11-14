@@ -19,11 +19,6 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            transition: background 0.25s ease;
-        }
-
-        body.register-active {
-            background: #001275 !important;
         }
 
         .app-shell {
@@ -32,49 +27,12 @@
             min-height: 100vh;
             background: white;
             position: relative;
-            transition: background 0.2s;
-        }
-
-        body.register-active .app-shell {
-            background: linear-gradient(145deg, #002aff 0%, #001275 100%);
-        }
-
-        .hero-banner {
-            width: 100%;
-            aspect-ratio: 450 / 230;
-            display: none;
-            overflow: hidden;
-        }
-
-        .hero-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        body.register-active .hero-banner {
-            display: block;
         }
 
         .card-panel {
             width: 100%;
             background: #ffffff;
             padding: 22px 24px 32px;
-            transition: all 0.2s;
-        }
-
-        .card-panel.login-layout {
-            margin-top: 0px;
-            border-radius: 0;
-        }
-
-        .card-panel.register-layout {
-            border-top-left-radius: 28px;
-            border-top-right-radius: 28px;
-            margin-top: -24px;
-            box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.18);
-            flex: 1;
         }
 
         .logo-area {
@@ -107,15 +65,15 @@
             flex-shrink: 0;
         }
 
-        /* Exact Pill/Capsule Styling matching your reference image */
+        /* Exact Capsule Styling matching your reference image */
         .login-capsule .input-capsule {
-            background: #f0f4ff !important;
+            background: #f4f7ff !important;
             border-radius: 50px !important;
-            padding: 16px 24px !important;
+            padding: 16px 22px !important;
             margin-bottom: 16px !important;
             display: flex !important;
             align-items: center !important;
-            gap: 16px !important;
+            gap: 14px !important;
             border: none !important;
             box-shadow: none !important;
         }
@@ -133,7 +91,7 @@
         }
 
         .login-capsule .input-capsule input::placeholder {
-            color: #a0aec0 !important;
+            color: #abb2c2 !important;
             font-weight: 400 !important;
         }
 
@@ -401,24 +359,22 @@
 <body>
 
 <div class="app-shell">
-    <div class="hero-banner" id="heroBanner">
-        <img src="https://i.postimg.cc/tCM6t2tz/register.png" alt="welcome banner">
-    </div>
-
     <!-- 1. LOGIN VIEW -->
     <div id="loginView" class="view-section active-view card-panel login-layout">
         <div class="logo-area">
             <img src="https://zxcvwe.wiki/static/images/Login_Logo.png" alt="TivraPay">
         </div>
 
-        <div class="input-capsule login-capsule">
-            <img src="https://zxcvwe.wiki/static/icon/phone.png" alt="phone icon" class="input-icon">
-            <input type="text" id="loginPhone" placeholder="Enter phone number" autocomplete="off">
-        </div>
+        <div class="login-capsule">
+            <div class="input-capsule">
+                <img src="https://zxcvwe.wiki/static/icon/phone.png" alt="phone icon" class="input-icon">
+                <input type="text" id="loginPhone" placeholder="Enter phone number" autocomplete="off">
+            </div>
 
-        <div class="input-capsule login-capsule">
-            <img src="https://zxcvwe.wiki/static/icon/password.png" alt="password icon" class="input-icon">
-            <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="off">
+            <div class="input-capsule">
+                <img src="https://zxcvwe.wiki/static/icon/password.png" alt="password icon" class="input-icon">
+                <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="off">
+            </div>
         </div>
 
         <div class="utils-bar">
@@ -498,8 +454,6 @@
         </div>
         <div class="privacy-content">
             <p>This application respects and protects the personal privacy of all users who use the service...</p>
-            <h2>1. Scope of application</h2>
-            <p>(a) When you register the account of this application, the personal registration information you provide...</p>
         </div>
     </div>
 </div>
@@ -554,17 +508,6 @@
     function switchView(viewId) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active-view'));
         document.getElementById(viewId).classList.add('active-view');
-        
-        const body = document.body;
-        const banner = document.getElementById('heroBanner');
-        
-        if (viewId === 'registerView') {
-            body.classList.add('register-active');
-            banner.style.display = 'block';
-        } else {
-            body.classList.remove('register-active');
-            banner.style.display = 'none';
-        }
         window.scrollTo(0, 0);
     }
 
